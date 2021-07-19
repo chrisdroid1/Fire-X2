@@ -7,9 +7,9 @@ from pathlib import Path
 from telethon import events
 
 from var import Var
-from virtualuserbot import CMD_LIST, LOAD_PLUG, SUDO_LIST, bot
-from virtualuserbot.Configs import Config
-from virtualuserbot.wraptools import (
+from firebot import CMD_LIST, LOAD_PLUG, SUDO_LIST, bot
+from firebot.Configs import Config
+from firebot.wraptools import (
     am_i_admin,
     ignore_bot,
     ignore_fwd,
@@ -98,11 +98,11 @@ def load_module(shortname):
         import sys
         from pathlib import Path
 
-        import virtualuserbot.modules
-        import virtualuserbot.utils
+        import firebot.modules
+        import firebot.utils
 
-        path = Path(f"virtualuserbot/modules/{shortname}.py")
-        name = "virtualuserbot.modules.{}".format(shortname)
+        path = Path(f"firebot/modules/{shortname}.py")
+        name = "firebot.modules.{}".format(shortname)
         spec = importlib.util.spec_from_file_location(name, path)
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
@@ -112,11 +112,11 @@ def load_module(shortname):
         import sys
         from pathlib import Path
 
-        import virtualuserbot.modules
-        import virtualuserbot.utils
+        import firebot.modules
+        import firebot.utils
 
-        path = Path(f"virtualuserbot/modules/{shortname}.py")
-        name = "virtualuserbot.modules.{}".format(shortname)
+        path = Path(f"firebot/modules/{shortname}.py")
+        name = "firebot.modules.{}".format(shortname)
         spec = importlib.util.spec_from_file_location(name, path)
         mod = importlib.util.module_from_spec(spec)
         mod.bot = bot
@@ -125,12 +125,12 @@ def load_module(shortname):
         mod.command = command
         mod.logger = logging.getLogger(shortname)
         # support for uniborg
-        sys.modules["uniborg.util"] = virtualuserbot.utils
-        sys.modules["friday.util"] = virtualuserbot.utils
-        sys.modules["userbot.utils"] = virtualuserbot.utils
-        sys.modules["userbot.plugins"] = virtualuserbot.modules
-        sys.modules["plugins"] = virtualuserbot.modules
-        sys.modules["userbot"] = virtualuserbot
+        sys.modules["uniborg.util"] = firebot.utils
+        sys.modules["friday.util"] = firebot.utils
+        sys.modules["userbot.utils"] = firebot.utils
+        sys.modules["userbot.plugins"] = firebot.modules
+        sys.modules["plugins"] = firebot.modules
+        sys.modules["userbot"] = firebot
         mod.Config = Config
         mod.ignore_grp = ignore_grp()
         mod.ignore_pm = ignore_pm()
@@ -140,10 +140,10 @@ def load_module(shortname):
         mod.borg = bot
         mod.friday = bot
         # support for paperplaneextended
-        sys.modules["virtualuserbot.events"] = virtualuserbot.utils
+        sys.modules["firebot.events"] = firebot.utils
         spec.loader.exec_module(mod)
         # for imports
-        sys.modules["virtualuserbot.modules." + shortname] = mod
+        sys.modules["firebot.modules." + shortname] = mod
         sedprint.info("Successfully imported " + shortname)
 
 
@@ -155,7 +155,7 @@ def remove_plugin(shortname):
             del LOAD_PLUG[shortname]
 
         except:
-            name = f"virtualuserbot.modules.{shortname}"
+            name = f"firebot.modules.{shortname}"
 
             for i in reversed(range(len(bot._event_builders))):
                 ev, cb = bot._event_builders[i]
